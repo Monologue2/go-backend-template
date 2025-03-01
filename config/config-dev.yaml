@@ -1,0 +1,14 @@
+app:
+  mode: "debug"
+  gorm_log_level: "info" # (silent, error, warn, info)
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "postgres"
+  dbname: "pts"
+  sslmode: "disable"
+  max_open_conns: 10
+  max_idle_conns: 5
+  conn_max_lifetime: 600
+  conn_max_idle_time: 300
