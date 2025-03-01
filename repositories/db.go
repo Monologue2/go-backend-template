@@ -1,20 +1,22 @@
 package repositories
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
 	"time"
 
-	_ "github.com/lib/pq" // PostgreSQL 드라이버
 	"gopkg.in/yaml.v3"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // Config 구조체
 type Config struct {
 	App struct {
-		Mode string `yaml:"mode"`
+		Mode         string `yaml:"mode"`
+		GormLogLevel string `yaml:"gorm_log_level"`
 	} `yaml:"app"`
 
 	Postgres struct {
@@ -33,10 +35,17 @@ type Config struct {
 
 // 전역 설정 변수
 var AppConfig Config
+var DB *gorm.DB
 
 func init() {
 	if err := LoadConfig(); err != nil {
 		log.Fatalf("❌ Config load failed: %v", err)
+	}
+
+	var err error
+	DB, err = InitDB()
+	if err != nil {
+		log.Fatalf("❌ Failed to initialize database: %v", err)
 	}
 }
 
@@ -64,8 +73,23 @@ func LoadConfig() error {
 	return nil
 }
 
+func getGormLogLevel(level string) logger.LogLevel {
+	switch level {
+	case "silent":
+		return logger.Silent
+	case "error":
+		return logger.Error
+	case "warn":
+		return logger.Warn
+	case "info":
+		return logger.Info
+	default:
+		return logger.Silent // 기본값 (최소 로그)
+	}
+}
+
 // DB 초기화
-func InitDB() (*sql.DB, error) {
+func InitDB() (*gorm.DB, error) {
 	switch os.Getenv("DB_TYPE") {
 	case "postgres":
 		return connectPostgres()
@@ -75,32 +99,26 @@ func InitDB() (*sql.DB, error) {
 }
 
 // PostgreSQL 연결
-func connectPostgres() (*sql.DB, error) {
-	host := AppConfig.Postgres.Host
-	port := AppConfig.Postgres.Port
-	user := AppConfig.Postgres.User
-	password := AppConfig.Postgres.Password
-	dbname := AppConfig.Postgres.DBName
-	sslmode := AppConfig.Postgres.SSLMode
+func connectPostgres() (*gorm.DB, error) {
+	cfg := AppConfig.Postgres
 
-	psqlDsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-		host, port, user, password, dbname, sslmode)
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode)
 
-	db, err := sql.Open("postgres", psqlDsn)
+	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(getGormLogLevel(AppConfig.App.GormLogLevel)), // 로그 레벨 설정
+	})
+
+	sqlDB, err := db.DB()
 	if err != nil {
 		return nil, err
 	}
 
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(5)
-	db.SetConnMaxLifetime(5 * time.Minute)
-	db.SetConnMaxIdleTime(2 * time.Minute)
+	sqlDB.SetMaxOpenConns(10)
+	sqlDB.SetMaxIdleConns(5)
+	sqlDB.SetConnMaxLifetime(5 * time.Minute)
+	sqlDB.SetConnMaxIdleTime(2 * time.Minute)
 
-	if err := db.Ping(); err != nil {
-		db.Close()
-		return nil, err
-	}
-
-	log.Println("✅ Connected to PostgreSQL")
+	log.Println("✅ Connected to PostgreSQL(GORM)")
 	return db, nil
 }
