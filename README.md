@@ -186,3 +186,10 @@ func main() {
     r.Run(":8080")
 }
 ```
+
+## 개선점
+[] JWT 인증/인가 추가 → middlewares/에서 AuthMiddleware 추가
+[] Swagger 연동 → docs/ 폴더 추가 후 OpenAPI 문서화
+[] gRPC 지원 → grpc/ 디렉터리 추가 후 protobuf 정의
+[] Pub/Sub 메시징 (Kafka, RabbitMQ) → services/에서 메시지 큐 연동
+[] 테스트 코드 추가 (*_test.go) → repository_test.go, service_test.go, handler_test.go 등
