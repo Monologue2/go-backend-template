@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/gin-gonic/gin"
 	test "shogle.net/template/api/handlers/test"
 	"shogle.net/template/api/models"
@@ -15,12 +13,6 @@ import (
 func main() {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery(), middlewares.RequestLogger())
-
-	// set environment varibale: DB_TYPE, ENV
-	// DB 연결 확인 (GORM)
-	if repositories.DB == nil {
-		log.Fatal("❌ Database connection is not initialized")
-	}
 
 	models.Migrate(repositories.DB)
 	userService := services.NewTestService(repositories.DB)

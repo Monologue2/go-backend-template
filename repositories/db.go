@@ -105,12 +105,17 @@ func connectPostgres() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode)
 
-	db, _ := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(getGormLogLevel(AppConfig.App.GormLogLevel)), // 로그 레벨 설정
 	})
+	if err != nil {
+		log.Fatalf("❌ Database connection is not initialized\nPlease check your configuration file or ENV variable.\n")
+		return nil, err
+	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
+		log.Fatal("❌ Database connection is not initialized\nPlease check your postgreSQL driver.\n")
 		return nil, err
 	}
 
