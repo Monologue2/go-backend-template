@@ -1,8 +1,9 @@
 package routes
 
 import (
+	test "project/api/handlers/test"
+
 	"github.com/gin-gonic/gin"
-	test "shogle.net/template/api/handlers/test"
 )
 
 func SetupTestRoutes(r *gin.Engine, testHandler *test.TestHandler) {

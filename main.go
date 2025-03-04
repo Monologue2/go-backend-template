@@ -1,13 +1,15 @@
 package main
 
 import (
+	test "project/api/handlers/test"
+
+	"project/api/routes"
+	"project/api/services"
+	"project/middlewares"
+	"project/models"
+	"project/repositories"
+
 	"github.com/gin-gonic/gin"
-	test "shogle.net/template/api/handlers/test"
-	"shogle.net/template/api/routes"
-	"shogle.net/template/api/services"
-	"shogle.net/template/middlewares"
-	"shogle.net/template/models"
-	"shogle.net/template/repositories"
 )
 
 func main() {

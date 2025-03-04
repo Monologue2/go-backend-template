@@ -1,9 +1,10 @@
 package services
 
 import (
+	"project/models"
+	"project/repositories"
+
 	"gorm.io/gorm"
-	"shogle.net/template/models"
-	"shogle.net/template/repositories"
 )
 
 func AddOne(id int) (int, error) {
