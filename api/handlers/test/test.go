@@ -5,8 +5,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"shogle.net/template/api/models"
 	"shogle.net/template/api/services"
+	"shogle.net/template/models"
 )
 
 func Ping(c *gin.Context) {

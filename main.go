@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	test "shogle.net/template/api/handlers/test"
-	"shogle.net/template/api/models"
 	"shogle.net/template/api/routes"
 	"shogle.net/template/api/services"
 	"shogle.net/template/middlewares"
+	"shogle.net/template/models"
 	"shogle.net/template/repositories"
 )
 

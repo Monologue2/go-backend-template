@@ -2,7 +2,7 @@ package services
 
 import (
 	"gorm.io/gorm"
-	"shogle.net/template/api/models"
+	"shogle.net/template/models"
 	"shogle.net/template/repositories"
 )
 

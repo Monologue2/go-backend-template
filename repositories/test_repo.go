@@ -2,7 +2,7 @@ package repositories
 
 import (
 	"gorm.io/gorm"
-	"shogle.net/template/api/models"
+	"shogle.net/template/models"
 )
 
 func CreateTest(db *gorm.DB, test *models.Test) error {
