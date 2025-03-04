@@ -9,13 +9,13 @@
 ## Directory Structure
 | 계층         | 역할 |
 |-------------|----------------------------------|
-| **`repositories/`** | DB 연결 관리, ORM 또는 SQL 실행 |
-| **`models/`** | Struct 정의, 테이블 마이그레이션 |
-| **`services/`** | 비즈니스 로직 실행, 여러 Repository 조합 가능 |
-| **`handlers/`** | Context 해석, 요청 검증, Service 실행 후 클라이언트 응답 |
+| **`api/services/`** | 비즈니스 로직 실행, 여러 Repository 조합 가능 |
+| **`api/handlers/`** | Context 해석, 요청 검증, Service 실행 후 클라이언트 응답 |
+| **`api/routes/`** | Handler와 HTTP 엔드포인트 연결 |
 | **`middlewares/`** | 요청 로깅, 인증/인가 등 공통 로직 관리 |
+| **`models/`** | Struct 정의, 테이블 마이그레이션 |
+| **`repositories/`** | DB 연결 관리, ORM 또는 SQL 실행 |
 | **`config/`** | YAML 기반 설정 관리 (환경별 Config 지원) |
-| **`routes/`** | Handler와 HTTP 엔드포인트 연결 |
 | **`main.go`** | 전체 애플리케이션 초기화 및 실행 |
 
 ## *gin.Context
