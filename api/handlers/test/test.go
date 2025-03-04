@@ -83,3 +83,18 @@ func (h *TestHandler) DeleteTest(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Test deleted successfully"})
 }
+
+func (h *TestHandler) AddOne(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid test ID"})
+		return
+	}
+
+	addedId, err := services.AddOne(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid test ID"})
+		return
+	}
+	c.JSON(http.StatusOK, addedId)
+}

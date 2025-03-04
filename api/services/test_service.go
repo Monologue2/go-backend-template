@@ -6,6 +6,10 @@ import (
 	"shogle.net/template/repositories"
 )
 
+func AddOne(id int) (int, error) {
+	return (id + 1), nil
+}
+
 type TestService struct {
 	DB *gorm.DB
 }
