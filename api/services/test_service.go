@@ -23,7 +23,7 @@ func (s *TestService) CreateTest(test *models.Test) error {
 	return repositories.CreateTest(s.DB, test)
 }
 
-func (s *TestService) GetTests() ([]models.Test, error) {
+func (s *TestService) GetTests() (*[]models.Test, error) {
 	return repositories.GetTests(s.DB)
 }
 
@@ -33,4 +33,8 @@ func (s *TestService) DeleteTest(id uint) error {
 
 func (s *TestService) GetTestByID(id uint) (*models.Test, error) {
 	return repositories.GetTestByID(s.DB, id)
+}
+
+func (s *TestService) RawQuery() (*[]models.Test, error) {
+	return repositories.RawQuery(s.DB)
 }

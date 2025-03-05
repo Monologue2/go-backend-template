@@ -99,3 +99,11 @@ func (h *TestHandler) AddOne(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, addedId)
 }
+
+func (h *TestHandler) RawQuery(c *gin.Context) {
+	test, err := h.TestService.RawQuery()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed RawQuery Services."})
+	}
+	c.JSON(http.StatusOK, test)
+}

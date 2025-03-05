@@ -15,5 +15,6 @@ func SetupTestRoutes(r *gin.Engine, testHandler *test.TestHandler) {
 		testGroup.GET("/:id", testHandler.GetTestByID)
 		testGroup.DELETE("/:id", testHandler.DeleteTest)
 		testGroup.GET("/add/:id", testHandler.AddOne)
+		testGroup.GET("/raw", testHandler.RawQuery)
 	}
 }
