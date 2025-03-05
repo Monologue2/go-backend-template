@@ -12,7 +12,7 @@ func RequestLogger() gin.HandlerFunc {
 		start := time.Now()
 		c.Next()
 		duration := time.Since(start)
-		log.Printf("[%s] %s | %s | %dms",
+		log.Printf("[%s] %s | %s | %dµs",
 			c.Request.Method, c.Request.URL.Path, c.ClientIP(), duration.Microseconds())
 	}
 }
