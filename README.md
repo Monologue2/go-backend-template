@@ -1,10 +1,14 @@
 # Go Backend Template
 [Web server gin](https://go.dev/doc/tutorial/web-service-gin)
-> 핸들러 + 서비스 + 저장소(Repository) 패턴: Golang에서 MVC 패턴을 단순화한 구조<br>
-> 개인적으로 프로젝트 양산 겸 사용을 위해 작성하였습니다.
+> 핸들러 + 서비스 + 저장소(Repository) 패턴<br>
+> Best Practice가 아닐 수 있으나, 꾸준한 수정을 거칠 수 있도록 하겠습니다.
+> 개인 프로젝트를 위해 작성했습니다.<br>
 
+## Setup Environment Variables
 - DB_TYPE
-- GIN_MODE
+  - "postgres"
+- GIN_MODE `practice/go/template/config/config-$(GIN_MODE).yaml`
+  - "dev"
 
 ## Directory Structure
 | 계층         | 역할 |
@@ -28,6 +32,28 @@
 | **파일 업로드 처리** | `c.FormFile()`을 이용해 파일을 업로드 | `file, _ := c.FormFile("file")` |
 
 ## Flow
+```mermaid 실행 순서
+graph LR;
+    A[Start] --> B[Setting Default Middleware with GIN server]
+    B --> C{Check DB_TYPE, GINMODE}
+    C --Exist--> D[Connect to database]
+    C --None--> E[Process termination]
+    D --> F[Add Service]
+    F --> G[Add Handler]
+    G --> H[Regist Handler on Routes] 
+```
+
+```mermaid 코드 작성 순서
+graph LR;
+    A[Set Env] --> B[Write Config]
+    B --> C[Middleware]
+    C --> D[Handler]
+    D --> E[Router]
+    E --> F[Service]
+    F --> G[models.TABLE]
+    G --> H[models.migrate]
+    H --> I[repositories.Query]
+```
 
 ### models/에서 테이블 정의
 ```go
